@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-exp-service
+  namespace: exp-service
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            backend:
+              serviceName: dashuju-front
+              servicePort: 31018
+          - path: /olexp_server # 转发路径为根路径 /
+            backend:
+              serviceName: jiaowu-system
+              servicePort: 31017

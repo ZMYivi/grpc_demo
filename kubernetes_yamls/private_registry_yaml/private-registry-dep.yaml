@@ -1,0 +1,43 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: private-registry
+  namespace: data-service
+spec:
+  selector:
+    matchLabels:
+      name: private-registry
+  template:
+    metadata:
+      labels:
+        name: private-registry
+    spec:
+      containers:
+      - name: private-registry
+        image: registry:2
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - name: private-registry-storage
+          mountPath: /var/lib/registry
+      nodeSelector:
+        name: k8s-master01
+      volumes:
+      - name: private-registry-storage
+        hostPath:
+          path: /root/k8s_volumes_dir/private_registry
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: private-registry
+  namespace: data-service
+spec:
+  type: NodePort
+  ports:
+  - port: 5000
+    targetPort: 5000
+    nodePort: 30009
+  selector:
+    name: private-registry

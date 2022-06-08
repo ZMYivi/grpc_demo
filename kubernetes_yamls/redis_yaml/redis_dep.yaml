@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: common-redis
+  namespace: data-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: common-redis
+    spec:
+      containers:
+      - name: common-redis
+        image: redis
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - name: foo
+          mountPath: "/usr/local/etc"
+        command:
+        - "redis-server"
+        args:
+        - "/usr/local/etc/redis/redis.conf"
+      volumes:
+      - name: foo
+        configMap:
+          name: redis-conf
+          items:
+          - key: redis.conf
+            path: redis/redis.conf

@@ -1,0 +1,22 @@
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: php-apache
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: php-apache
+  minReplicas: 1
+  maxReplicas: 10
+  # 在 v2beta2 版本中，使用 metrics 字段定义目标指标值
+  metrics:
+    # type 字段表示指标类型
+    - type: Resource
+      resource:
+        name: cpu
+        # target 字段定义指标的目标值，系统在指标数据达到目标值时将触发扩缩容操作
+        target:
+          type: Utilization
+          averageUtilization: 50

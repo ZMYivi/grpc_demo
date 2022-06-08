@@ -1,0 +1,30 @@
+syntax = "proto3";
+package protos;
+
+// python -m grpc_tools.protoc -I. --python_out=./jiaowu_service --grpc_python_out=./jiaowu_service/ ./protos/service1.proto
+
+enum StatusCode {
+    OK = 0;
+    ERROR = -1;
+    WARNING = -2;
+}
+
+message BaseReq {}
+
+message CommonResp {
+    BaseResp resp = 255;
+}
+
+message BaseResp {
+    string status_message = 1;
+    StatusCode status = 2;
+}
+
+message IdData {
+    int64 id = 1;
+}
+
+message NumData {
+    int64 num = 1;
+}
+

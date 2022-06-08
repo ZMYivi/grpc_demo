@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+import "protos/base.proto";
+
+package protos;
+
+message Data {
+    string text = 1;
+    map<int32, string> m = 2;
+    repeated Strs strs = 3;
+    enum Status {
+        DEFAULT = 0;
+        NORMAL = 1;
+        DELETE = 2;
+    }
+    Status status = 4;
+    int64 integer = 5;
+}
+
+message Strs {
+    string str = 1;
+}
+
+message DoMicroReq {
+    string text = 1;
+}
+
+message DoMicroResp {
+    Data data = 1;
+
+    protos.BaseResp resp = 255;
+}
+
+service MicroService { //定义服务
+  rpc DoMicro(DoMicroReq) returns (DoMicroResp){}
+}

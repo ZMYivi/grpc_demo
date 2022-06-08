@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: data-service
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.7
+        env:                        #以下是设置MySQL数据库的密码
+        - name: MYSQL_ROOT_PASSWORD
+          value: initial123
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql          #MySQL容器的数据都是存在这个目录的，要对这个目录做数据持久化
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc       #指定pvc的名称
+
+---          #以下是创建svc的yaml文件
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: data-service
+spec:
+  type: NodePort
+  ports:
+  - port: 3306
+    targetPort: 3306
+    nodePort: 30006
+  selector:
+    app: mysql

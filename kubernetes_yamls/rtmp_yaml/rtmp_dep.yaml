@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx-rtmp-service
+  namespace: data-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: nginx-rtmp-service
+    spec:
+      containers:
+        - name: nginx-rtmp-service
+          image: alfg/nginx-rtmp
+          ports:
+            - containerPort: 1935
+            - containerPort: 80

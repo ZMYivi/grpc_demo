@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: micro-service
+  namespace: exp-code
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        k8s-app: micro-service
+    spec:
+      hostNetwork: true
+      containers:
+      - name: micro-service
+        image: 13070163997/micro_service_server:v1.0.1
+        imagePullPolicy: "IfNotPresent"
+        ports:
+        - containerPort: 31019
+

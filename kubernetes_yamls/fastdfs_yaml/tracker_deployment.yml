@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+    name: tracker-deploy # 部署的容器名称
+    namespace: data-service # 部署到的命名空间
+    labels:
+        name: tracker-deploy
+spec: # 该 Deployment 的规格说明
+    replicas: 1 # 副本数
+    template:
+        metadata:
+            labels:
+                app: tracker
+        spec:
+            terminationGracePeriodSeconds: 0
+            containers:
+            - name: tracker
+              image: luhuiguo/fastdfs
+              imagePullPolicy: Always #获取镜像的策略 Always表示下载镜像 IfNotPresent表示优先使用本地镜像，否则下载镜像，Nerver表示仅使用本地镜像
+              ports:
+              - containerPort: 22122
+              protocol: TCP #端口协议，支持TCP和UDP，默认TCP
+              volumeMounts:
+              - name: tracker-volume
+                mountPath: /var/fdfs
+              command: ["/usr/bin/start.sh","tracker"]
+            volumes:
+            - name: tracker-volume
+              hostPath:
+                path: /root/k8s_volumes_dir/fastdfs/tracker # 在宿主机上存储的地址

@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+    name: storage0-deploy
+    namespace: data-service
+    labels:
+        name: storage0-deploy
+spec:
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                app: storage0
+        spec:
+            terminationGracePeriodSeconds: 0
+            containers:
+            - name: storage0
+              image: luhuiguo/fastdfs # 表示引用镜像的地址
+              imagePullPolicy: Always
+              ports:
+              - containerPort: 22122
+              protocol: TCP #端口协议，支持TCP和UDP，默认TCP
+              volumeMounts:
+              - name: storage0-volume
+                mountPath: /var/fdfs
+              env:
+              - name: TRACKER_SERVER
+                value: 10.96.0.110:22122
+              command: ["/usr/bin/start.sh","storage"]
+            volumes:
+            - name: storage0-volume
+              hostPath:
+                path: /root/k8s_volumes_dir/fastdfs/storage0 # 在宿主机上存储的地址，可自行配置

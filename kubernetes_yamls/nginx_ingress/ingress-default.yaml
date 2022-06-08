@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-nginx
+spec:
+  rules:
+    - host: nginx.kube.com # 对外访问的域名为 nginx.kube.com
+      http:
+        paths:
+          - path: /nginx-test # 转发路径为根路径 /
+            backend:
+              serviceName: nginx # 对外暴露 Service 的名称为 nginx
+              servicePort: 80 # nginx Service 的 ClusterPort 为 80
+    - http:
+        paths:
+          - path: /nginx # 转发路径为根路径 /
+            backend:
+              serviceName: nginx # 对外暴露 Service 的名称为 nginx
+              servicePort: 80 # nginx Service 的 ClusterPort 为 80

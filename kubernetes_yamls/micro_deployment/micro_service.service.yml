@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: micro-service
+  namespace: exp-code
+  labels:
+    k8s-app: micro-service
+spec:
+  type: NodePort
+  ports:
+  - port: 31019
+    targetPort: 31019
+    nodePort: 30019
+  selector:
+    k8s-app: micro-service
