@@ -22,8 +22,10 @@
 > python -m grpc_tools.protoc -I. --python_out={输出路径} --grpc_python_out={输出路径} {接口文件定义路径}  
 > 如 python -m grpc_tools.protoc -I. --python_out=./ --grpc_python_out=./ ./protos/micro_service.proto
 
+高并发的情况，需要控制好连接数量，每次请求需要及时释放当前连接
 
 ## peewee 访问mysql数据库（python的数据库访问）
+
 ### peewee 使用参考文档
 > http://docs.peewee-orm.com/en/latest/index.html
 
@@ -33,8 +35,10 @@
 ### peewee 运行demo
 > tests/peewee_test.py
 
+高并发的情况，需要考虑数据库连接的设计方式，适当的增大mysql的最大连接池，同时需要设置连接超时的等待时间，不要太长
 
 ## consul服务注册、发现（优化服务ip配置过程，减轻服务访问复杂度）
+
 ### consul python库安装命令
 > pip install python-consul
 
